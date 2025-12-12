@@ -43,41 +43,29 @@ stages:
       size: 15088679
     - path: src/train_model.py
       hash: md5
-      md5: 17a1bae58bada7dcfa611eea6ac307d7
-      size: 2666
+      md5: 1998ddd21ea4bb8705dba669d1cbe504
+      size: 1822
     outs:
     - path: models/rf_model.pkl
       hash: md5
-      md5: d244c2ef54f2711fb20155510db587cc
-      size: 5837929
-    - path: models/rf_model_features.pkl
-      hash: md5
-      md5: abbcea7ab6ea7896cd20cec8ca573257
-      size: 3475
+      md5: 8c35bbaa09c6cbd4e23a7b45efd72f35
+      size: 1870089
   predict:
     cmd: python src/predict.py
     deps:
-    - path: data/features/engineered_data.csv
-      hash: md5
-      md5: a9c72a6172c8fe1da3b94adf500f872f
-      size: 15088679
     - path: models/rf_model.pkl
       hash: md5
-      md5: d244c2ef54f2711fb20155510db587cc
-      size: 5837929
-    - path: models/rf_model_features.pkl
-      hash: md5
-      md5: abbcea7ab6ea7896cd20cec8ca573257
-      size: 3475
+      md5: 8c35bbaa09c6cbd4e23a7b45efd72f35
+      size: 1870089
     - path: src/predict.py
       hash: md5
-      md5: d8e9f2dbea7816a6182798a947972e19
-      size: 2196
+      md5: 679a2ad865eef546d09e0e4c0c662916
+      size: 1253
     outs:
     - path: data/predictions/preds.csv
       hash: md5
-      md5: 462de508efe2a9cd19a734b0a58ec4b5
-      size: 6196
+      md5: 5a95a67e37919835be6c92666af390e3
+      size: 6200
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -85,20 +73,16 @@ stages:
       hash: md5
       md5: a9c72a6172c8fe1da3b94adf500f872f
       size: 15088679
-    - path: data/predictions/preds.csv
+    - path: models/rf_model.pkl
       hash: md5
-      md5: 462de508efe2a9cd19a734b0a58ec4b5
-      size: 6196
+      md5: 8c35bbaa09c6cbd4e23a7b45efd72f35
+      size: 1870089
     - path: src/evaluate.py
       hash: md5
-      md5: 14c7bb7ed5d35dd30df408da52088f89
-      size: 2200
+      md5: d2374a3df3e6673e8e6f95a1c59716de
+      size: 728
     outs:
     - path: reports/classification_report.txt
       hash: md5
-      md5: 434b7f92fbdf590406cd6a26527295e6
+      md5: 0b1f5ba7c26c6b6108b77e22192c024f
       size: 334
-    - path: reports/confusion_matrix.png
-      hash: md5
-      md5: 83737e6e9f39e245c91299a132b2df97
-      size: 17257

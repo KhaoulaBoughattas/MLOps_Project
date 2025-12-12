@@ -40,3 +40,10 @@ Monitoring du modèle en production pour détecter le drift des données ou bais
 ### Tests et CI/CD
 
 Tests unitaires pour le code ML, intégration dans un pipeline CI/CD (GitHub Actions).
+
+### Extension “cool” si tu veux aller plus loin
+
+Ajouter un dashboard en temps réel pour visualiser le nombre de prédictions et la performance du modèle avec Streamlit ou Dash.
+
+Ajouter un retraining automatique si la performance descend sous un seuil.
+

@@ -1,47 +1,66 @@
-# src/predict.py
-
 import pandas as pd
 import joblib
 import os
 import sys
 
-def predict(data_path="data/features/engineered_data.csv",
-            model_path="models/rf_model.pkl",
-            output_path="data/predictions/preds.csv"):
+def predict(
+    data_path="data/features/engineered_data.csv",
+    model_path="models/rf_model.pkl",
+    output_path="data/predictions/preds.csv",
+    threshold=None  # seuil optionnel uniquement pour modèles binaires
+):
 
-    # Vérifier que le modèle existe
+    # --- Vérifications ---
     if not os.path.exists(model_path):
-        print(f"Erreur : le fichier du modèle '{model_path}' est introuvable.")
+        print(f"❌ Modèle '{model_path}' introuvable.")
         sys.exit(1)
 
-    # Vérifier que les données existent
     if not os.path.exists(data_path):
-        print(f"Erreur : le fichier des données '{data_path}' est introuvable.")
+        print(f"❌ Fichier de données '{data_path}' introuvable.")
         sys.exit(1)
 
-    # Charger les données
+    print("⏳ Chargement des données...")
     df = pd.read_csv(data_path)
 
-    # Charger le modèle
+    print("⏳ Chargement du modèle...")
     model = joblib.load(model_path)
 
-    # Séparer features
-    if "Y" in df.columns:
-        X = df.drop(columns=["Y"])
+    # --- Chargement des features ---
+    features_path = model_path.replace(".pkl", "_features.pkl")
+    if not os.path.exists(features_path):
+        print(f"❌ Fichier des features '{features_path}' introuvable.")
+        sys.exit(1)
+    features = joblib.load(features_path)
+
+    # Vérification que toutes les features existent
+    missing = [f for f in features if f not in df.columns]
+    if missing:
+        print("❌ Certaines features manquent dans les données :")
+        for m in missing:
+            print(f"   - {m}")
+        sys.exit(1)
+
+    X = df[features].copy()
+    print("⏳ Génération des prédictions...")
+
+    # --- Cas multi-classes ou binaire ---
+    n_classes = len(getattr(model, "classes_", []))
+    if n_classes > 2:
+        preds = model.predict(X)
     else:
-        X = df
+        if hasattr(model, "predict_proba") and threshold is not None:
+            proba = model.predict_proba(X)[:, 1]
+            preds = (proba >= threshold).astype(int)
+        else:
+            preds = model.predict(X)
 
-    # Faire la prédiction
-    preds = model.predict(X)
-
-    # Créer le dossier si nécessaire
+    # --- Sauvegarde ---
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-
-    # Sauvegarder les prédictions
     pd.DataFrame({"prediction": preds}).to_csv(output_path, index=False)
-
     print(f"✔ Prédictions sauvegardées dans : {output_path}")
-
+    print(f"✔ Nombre total : {len(preds)}")
+    print("✔ Distribution des classes :")
+    print(pd.Series(preds).value_counts())
 
 if __name__ == "__main__":
     predict()
