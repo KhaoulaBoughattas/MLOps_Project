@@ -1,0 +1,88 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/data_preprocessing.py
+    deps:
+    - path: data/secom
+      hash: md5
+      md5: e2bb2a563882b293929873a703755a63.dir
+      size: 5434844
+      nfiles: 3
+    - path: src/data_preprocessing.py
+      hash: md5
+      md5: ee84a6425dc95c92f0b6ed18a596f83c
+      size: 1784
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 3044e0517526df33dd60327e2f7b91ea.dir
+      size: 15388363
+      nfiles: 1
+  features:
+    cmd: python src/feature_engineering.py
+    deps:
+    - path: data/processed/clean_data.csv
+      hash: md5
+      md5: a29e3fbde823acac331ea19fd9948181
+      size: 15388363
+    - path: src/feature_engineering.py
+      hash: md5
+      md5: 8e1b9708a11ad9762e8ef379f9bc5ee6
+      size: 828
+    outs:
+    - path: data/features/engineered_data.csv
+      hash: md5
+      md5: a9c72a6172c8fe1da3b94adf500f872f
+      size: 15088679
+  train:
+    cmd: python src/train_model.py
+    deps:
+    - path: data/features/engineered_data.csv
+      hash: md5
+      md5: a9c72a6172c8fe1da3b94adf500f872f
+      size: 15088679
+    - path: src/train_model.py
+      hash: md5
+      md5: 1998ddd21ea4bb8705dba669d1cbe504
+      size: 1822
+    outs:
+    - path: models/rf_model.pkl
+      hash: md5
+      md5: 8c35bbaa09c6cbd4e23a7b45efd72f35
+      size: 1870089
+  predict:
+    cmd: python src/predict.py
+    deps:
+    - path: models/rf_model.pkl
+      hash: md5
+      md5: 8c35bbaa09c6cbd4e23a7b45efd72f35
+      size: 1870089
+    - path: src/predict.py
+      hash: md5
+      md5: 679a2ad865eef546d09e0e4c0c662916
+      size: 1253
+    outs:
+    - path: data/predictions/preds.csv
+      hash: md5
+      md5: 5a95a67e37919835be6c92666af390e3
+      size: 6200
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/features/engineered_data.csv
+      hash: md5
+      md5: a9c72a6172c8fe1da3b94adf500f872f
+      size: 15088679
+    - path: models/rf_model.pkl
+      hash: md5
+      md5: 8c35bbaa09c6cbd4e23a7b45efd72f35
+      size: 1870089
+    - path: src/evaluate.py
+      hash: md5
+      md5: d2374a3df3e6673e8e6f95a1c59716de
+      size: 728
+    outs:
+    - path: reports/classification_report.txt
+      hash: md5
+      md5: 0b1f5ba7c26c6b6108b77e22192c024f
+      size: 334
