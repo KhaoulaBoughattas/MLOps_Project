@@ -12,6 +12,7 @@ env/
 venv/
 
 # Data files
+data/**/*.csv
 data/
 mlruns/
 
@@ -21,3 +22,11 @@ mlruns/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Models
+models/*.pkl
+
+# MLflow
+mlruns/
+
+

@@ -19,7 +19,7 @@ def full_ml_pipeline():
     for folder in ["data/processed", "data/features", "data/predictions", "models", "reports"]:
         os.makedirs(folder, exist_ok=True)
 
-    # 1️⃣ Prétraitement
+    # 1️ Prétraitement
     print("\n--- Étape 1 : Prétraitement ---")
     preprocess_secom(
         data_path="data/secom/secom.data",
@@ -27,14 +27,14 @@ def full_ml_pipeline():
         output_path="data/processed/clean_data.csv"
     )
 
-    # 2️⃣ Feature Engineering
+    # 2️ Feature Engineering
     print("\n--- Étape 2 : Feature Engineering ---")
     add_features(
         input_path="data/processed/clean_data.csv",
         output_path="data/features/engineered_data.csv"
     )
 
-    # 3️⃣ Entraînement
+    # 3️ Entraînement
     print("\n--- Étape 3 : Entraînement ---")
     train_model(
         data_path="data/features/engineered_data.csv",
@@ -43,7 +43,7 @@ def full_ml_pipeline():
         balance_method="smote"
     )
 
-    # 4️⃣ Prédictions
+    # 4️ Prédictions
     print("\n--- Étape 4 : Prédictions ---")
     predict(
         data_path="data/features/engineered_data.csv",
@@ -51,7 +51,7 @@ def full_ml_pipeline():
         output_path="data/predictions/preds.csv"
     )
 
-    # 5️⃣ Évaluation
+    # 5️ Évaluation
     print("\n--- Étape 5 : Évaluation ---")
     evaluate(
         data_path="data/features/engineered_data.csv",
