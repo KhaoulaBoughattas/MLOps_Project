@@ -181,9 +181,10 @@ client.transition_model_version_stage(
 
 ```mermaid
 flowchart LR
-    A[MLflow Model (Production)] --> B[FastAPI Inference Service]
-    B --> C[Docker Container]
-    C --> D[Kubernetes Deployment]
+    A["MLflow Model (Production)"] --> B["FastAPI Inference Service"]
+    B --> C["Docker Container"]
+    C --> D["Kubernetes Deployment"]
+
 ```
 
 📌 Key Highlights
@@ -199,5 +200,6 @@ Scalable deployment with Docker + Kubernetes
 MLflow experiment tracking & model registry
 
 This README demonstrates a complete end-to-end MLOps workflow suitable for production evaluation.
+
 
 
