@@ -23,25 +23,6 @@ Binary classification task using the **SECOM dataset** from [UCI Machine Learnin
 ---
 
 ## 🏗 Project Architecture
-### ASCII Overview
-
-Data (SECOM CSV)
-↓
-Data Preprocessing & Feature Engineering
-↓
-ML Pipeline (Train/Test Split, Model Training)
-↓
-MLflow Tracking & Experiment Logging
-↓
-MLflow Model Registry
-↓
-FastAPI Inference API
-↓
-Docker Container
-↓
-Kubernetes Deployment
-
-
 ### Mermaid Flow Diagram
 
 ```mermaid
@@ -54,7 +35,7 @@ flowchart LR
     F --> G[FastAPI Inference API]
     G --> H[Docker Container]
     H --> I[Kubernetes Deployment]
-
+```
 
 ---
 
@@ -115,6 +96,7 @@ flowchart LR
   7. Deploy to Kubernetes cluster (optional: production)  
 
 **Mermaid CI/CD Diagram:**
+```mermaid
 flowchart TD
     A[GitHub Push/PR] --> B[GitHub Actions CI/CD]
     B --> C[Run Tests]
@@ -122,24 +104,32 @@ flowchart TD
     D --> E[Push Docker Image to Registry]
     E --> F[Kubernetes Deployment]
     F --> G[Live API Service]
-
+```
 
 
 ## 🚀 How to Run Locally
 1️⃣ Train Model
+```python
 python -m pipelines.train_pipeline
+```
 
 2️⃣ Launch MLflow UI
+```python 
 mlflow ui
-
+```
 
 Access: http://localhost:5000
 
 3️⃣ Run FastAPI Server
+```python
 uvicorn api.main:app --reload
+```
 
 4️⃣ Test API
+```bash
 POST http://127.0.0.1:8000/predict
+```
+
 Body:
 {
   "features": [val1, val2, ..., valN]
@@ -147,19 +137,27 @@ Body:
 
 📦 Docker Deployment
 # Build Docker image
+```bash 
 docker build -t secom-api:latest -f docker/Dockerfile .
+```
 
 # Run container
+```bash
 docker run -p 8000:8000 secom-api:latest
+```
 
 ☸️ Kubernetes Deployment
+```bash
+
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
-
+```
 
 Access API through Kubernetes Service on port 8000.
 
 ✅ MLflow Model Registry Example
+```python
+
 from mlflow.tracking import MlflowClient
 
 client = MlflowClient()
@@ -177,13 +175,16 @@ client.transition_model_version_stage(
     version=1,
     stage="Production"
 )
+```
 
 🎯 Final Deployment Flow
+```mermaid
+
 flowchart LR
     A[MLflow Model (Production)] --> B[FastAPI Inference Service]
     B --> C[Docker Container]
     C --> D[Kubernetes Deployment]
-
+```
 
 📌 Key Highlights
 
@@ -198,3 +199,4 @@ Scalable deployment with Docker + Kubernetes
 MLflow experiment tracking & model registry
 
 This README demonstrates a complete end-to-end MLOps workflow suitable for production evaluation.
+
